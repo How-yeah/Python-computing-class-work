@@ -11,13 +11,18 @@ class WordCounter():
         words = contents.split()
         return words
 
+    def filter_nonwords(self, words: list) -> list:
+        """
+        去除非单词字符
+        """
+        pattern = re.compile("\W")
+        words = [re.sub(pattern, '', word) for word in words]
+        return words
+
     def count_words(self, is_text=True, is_sorted=True) -> list:
         words = self.get_words()
         if is_text:
-            # 若有必要，去除标点
-            pattern = re.compile("\W")
-            words = [re.sub(pattern, '', word) for word in words]
-
+            words = self.filter_nonwords(words)
         words_dict = {}
         for key in words:
             words_dict[key] = words_dict.get(key, 0) + 1  # 查询键的值,若键不存在就新建，默认赋0值
@@ -30,6 +35,8 @@ class WordCounter():
 
     def count_key_words(self, is_text=True, is_sorted=True) -> list:
         words = self.get_words()
+        if is_text:
+            words = self.filter_nonwords(words)
         # 去除非关键词
         for word in words[:]:
             if word not in self.key_words:
