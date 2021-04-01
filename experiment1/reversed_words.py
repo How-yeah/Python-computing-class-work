@@ -1,4 +1,4 @@
-with open(r'./experiment1/words.txt') as out_file:
+with open(r'./experiment1/data/words.txt') as out_file:
     words = []
     for line in out_file:
         words.append(line.rstrip())

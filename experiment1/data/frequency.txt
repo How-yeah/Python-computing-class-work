@@ -1,0 +1,8 @@
+the: 24
+and: 18
+is: 3
+if: 3
+so: 2
+while: 1
+but: 1
+all: 0
