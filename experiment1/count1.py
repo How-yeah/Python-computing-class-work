@@ -1,6 +1,6 @@
 a_list = []
 count = 0
-with open('../english.txt', encoding='utf-8') as f:
+with open('experiment1/english.txt', encoding='utf-8') as f:
     str1 = f.read()
 a_list = str1.split(' ')
 b_list = ['abc', 'rewq', 'lkj']

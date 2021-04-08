@@ -1,5 +1,5 @@
 a_list=[]
-with open('../english.txt', encoding='utf-8') as f:
+with open('experiment1/english.txt', encoding='utf-8') as f:
 	str1=f.read()
 a_list=str1.split(' ')
 print(a_list)

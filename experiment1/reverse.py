@@ -1,5 +1,5 @@
 a_list=[]
-with open('../words.txt', encoding='utf-8') as f:
+with open('experiment1/words.txt', encoding='utf-8') as f:
 	for line in f:
 		a_list.append(line.strip('\n').split(',')[0])
 for i in a_list:
