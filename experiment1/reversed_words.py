@@ -8,7 +8,7 @@ for word_x in words:
     for word_y in words:
         if word_x[::-1] == word_y and word_x != word_y:
             if word_y + " - " + word_x not in reversed_words:
-                print('find {} reversed words'.format(count))
+                print('find {} reversed words: {} - {}'.format(count, word_x, word_y))
                 count += 1
                 reversed_words.append(word_x + " - " + word_y)
 with open(r'./experiment1/reversed_words.txt', 'w') as in_file:
