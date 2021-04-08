@@ -29,7 +29,8 @@ class WordCounter():
         """
         统计词频
         :param is_text: 是则文章，否则纯词汇
-        :return: 词频列表
+        :param is_sorted: 是否按词频降序排列
+        :return: 装载键值对元组的词频列表
         """
         words = self.get_words()
         if is_text:
@@ -48,9 +49,10 @@ class WordCounter():
 
     def count_key_words(self, is_text=True, is_sorted=True) -> list:
         """
-        在关键词表中统计词频
+        根据关键词列表统计词频
         :param is_text: 是则文章，否则纯词汇
-        :return: 词频列表
+        :param is_sorted: 是否按词频降序排列
+        :return: 装载键值对元组的词频列表
         """
         words = self.get_words()
         if is_text:
@@ -70,7 +72,7 @@ class WordCounter():
                               key=lambda x: x[1], reverse=True)
         else:
             frequecy = words_dict.items()
-
+        # 添加没有出现的关键词
         for key_word in self.key_words:
             if key_word not in words:
                 frequecy.append((key_word, 0))
