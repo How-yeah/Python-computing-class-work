@@ -79,6 +79,27 @@ def circle(t, r):
     arc(t, r, 360)
 
 
+# 画花瓣
+def petal(t, r, angle):
+    for i in range(2):
+        arc(t, r, angle)
+        lt(t, 180 - angle)
+
+
+# 画花
+def flower(t, n, r, angle):
+    for i in range(n):
+        petal(t, r, angle)
+        lt(t, 360.0 / n)
+
+
+# 移动乌龟位置
+def move(t, length):
+    pu(t)
+    fd(t, length)
+    pd(t)
+
+
 # the following condition checks whether we are
 # running as a script, in which case run the test code,
 # or being imported, in which case don't.
@@ -90,15 +111,11 @@ if __name__ == '__main__':
     bob.delay = 0.001
 
     # draw a circle centered on the origin
-    radius = 100
-    pu(bob)
-    fd(bob, radius)
-    lt(bob)
-    pd(bob)
-    # circle(bob, radius)
-    # arc(bob, radius, 60)
-    # polygon(bob, 30, 35)
-    # square(bob, 100)
-    polyline(bob, 2, 100, 90)
+    move(bob, -100)
+    flower(bob, 7, 60.0, 60.0)
+    move(bob, 100)
+    flower(bob, 10, 40.0, 80.0)
+    move(bob, 100)
+    flower(bob, 20, 140.0, 20.0)
 
     wait_for_user()
