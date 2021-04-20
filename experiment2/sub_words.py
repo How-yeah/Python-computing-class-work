@@ -7,7 +7,7 @@ def find(word: str) -> str:
         for i in range(len(word)):
             sub_word = word[:i]+word[i+1:]  # 删除第i个字母得到子单词
             # print(sub_word)
-            if sub_word in exact_words or (sub_word in words and sub_word not in failed_words and find(sub_word) is not None):
+            if sub_word in exact_words or (sub_word in words and sub_word not in failed_words and find(sub_word)):
                 # 若子单词在可缩减单词列表中，或子单词在单词列表中且不在非可缩减单词列表中且子单词的子单词仍是可缩减单词
                 exact_words.add(word)
                 max_len = max(max_len, len(word))
@@ -44,14 +44,22 @@ if __name__ == '__main__':
 
     start = time.time()
     for word in words_list:
+        # 以最快速度查找
         if len(word) > max_len:
             sub_word = find(word)
             if sub_word:
                 longest_word = sub_word
     end = time.time()
+
+    for word in words_list:
+        # 查找全部的单词
+        find(word)
+
     print('Cost '+str(end-start) + 's\n')
     # show_word(longest_word)
-    for word in exact_words:
-        show_word(word)
+    print(exact_words)
+    print(str(len(exact_words))+' total')
+    # for word in exact_words:
+    #     show_word(word)
     print('\nThe lognest result is:')
     show_word(longest_word)
