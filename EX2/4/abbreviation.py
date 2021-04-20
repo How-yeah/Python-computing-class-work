@@ -1,47 +1,38 @@
-import copy
+from time import time
 
 readFile = open('words.txt', 'r')
 wordList = readFile.readlines()
 for i in range(len(wordList)):
     wordList[i] = wordList[i][:-1]
-wordDict = dict(zip(wordList, wordList))
+wordDict = set(wordList)
+wordDict.update({'a', 'i'})
 readFile.close()
 
 
-# def check(x):
-#     if x == 'a' or x == 'i':
-#         return True
-#     if (check(x[1:]) in wordDict) or (check(x[:-1]) in wordDict):
-#         return True
-#     else:
-#         return False
+def check(words):
+    if words in res:
+        return True
+    if words == 'a' or words == 'i':
+        return True
+    for index in range(len(words)):
+        temp = words[:index] + words[index + 1:]
+        if temp in wordDict:
+            return check(temp)
 
 
-# def main():
-res = []
+start = time()
+res = set()
 for word in wordList:
     flag = True
-    temp = word
-
-    while temp != '':
-        if temp == 'a' or temp == 'i':
-            break
-        if temp[1:] in wordDict or temp[1:] == 'a' or temp[1:] == 'i':
-            temp = copy.deepcopy(temp[1:])
-        elif temp[:1] in wordDict or temp[1:] == 'a' or temp[1:] == 'i':
-            temp = copy.deepcopy(temp[:1])
-        else:
-            flag = False
-            break
-
+    flag = check(word)
     if flag:
         print(word)
-        res.append(word)
+        res.add(word)
+end = time()
 
-
+print(end - start)
 writeFile = open('result.txt', 'w')
 for x in res:
     print(x, file=writeFile)
+print(end - start, file=writeFile)
 writeFile.close()
-
-
