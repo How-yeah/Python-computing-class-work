@@ -4,7 +4,7 @@ import random
 
 def get_p(m: int, n: int) -> float:
     """
-    m个班级中存在相同生日情况的概率
+    班级中存在相同生日情况的概率
     :param m: 班级总个数
     :param n: 一个班级的人数
     :return: 概率
