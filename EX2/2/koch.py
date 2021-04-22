@@ -15,26 +15,18 @@ except ImportError:
     from TurtleWorld import *
 
 
-def koch(t, n):
+def koch(t, order, size):
     """Draws a koch curve with length n."""
-    if n < 3:
-        fd(t, n)
-        return
-    m = n / 3.0
-    koch(t, m)
-    lt(t, 60)
-    koch(t, m)
-    rt(t, 120)
-    koch(t, m)
-    lt(t, 60)
-    koch(t, m)
-
-
-def snowflake(t, n):
-    """Draws a snowflake (a triangle with a Koch curve for each side)."""
-    for i in range(3):
-        koch(t, n)
-        rt(t, 120)
+    if order == 0:
+        t.fd(size)
+    else:
+        koch(t, order - 1, size / 3)
+        t.rt(85)
+        koch(t, order - 1, size / 3)
+        t.lt(170)
+        koch(t, order - 1, size / 3)
+        t.rt(85)
+        koch(t, order - 1, size / 3)
 
 
 world = TurtleWorld()
@@ -45,6 +37,8 @@ bob.x = -150
 bob.y = 90
 bob.redraw()
 
-snowflake(bob, 300)
+for i in range(5):
+    koch(bob, 5, 1000)
+    bob.rt(72)
 
 world.mainloop()

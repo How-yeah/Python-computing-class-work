@@ -18,6 +18,7 @@ def check(words):
         temp = words[:index] + words[index + 1:]
         if temp in wordDict:
             return check(temp)
+    return False
 
 
 start = time()
@@ -35,4 +36,9 @@ writeFile = open('result.txt', 'w')
 for x in res:
     print(x, file=writeFile)
 print(end - start, file=writeFile)
+maxLenWord = ''
+for x in res:
+    if len(x) > len(maxLenWord):
+        maxLenWord = x
+print("最长单词是：", maxLenWord)
 writeFile.close()
