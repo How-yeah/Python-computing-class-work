@@ -33,7 +33,7 @@ world = TurtleWorld()
 bob = Turtle()
 bob.delay = 0
 
-bob.x = -150
+bob.x = -100
 bob.y = 90
 bob.redraw()
 

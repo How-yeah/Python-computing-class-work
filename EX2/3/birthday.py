@@ -4,8 +4,8 @@ import copy
 
 def Count(M, N):
     monthDate = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-    classList = list()
-    classBirthday = list()
+    classList = list()  # 记录所有班级的全部生日信息
+    classBirthday = list()  # 记录1个班级的生日情况
     for i in range(M):
         for j in range(N):
             month = randint(1, 12)  # 随机生成月份
@@ -21,7 +21,7 @@ def Count(M, N):
             if classList[i].count(x) >= 2:
                 sameBirthdayCount += 1
                 break
-    return sameBirthdayCount / M
+    return sameBirthdayCount / M  # 返回相同生日班级数占总班级数比例
 
 
 def main():
