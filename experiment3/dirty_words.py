@@ -5,13 +5,6 @@ import logging
 import re
 import random
 
-http = ['27.43.186.155', '59.63.67.165', '117.95.232.60', '163.204.95.155', '60.191.11.241']
-
-proxies = {
-    'http': '114.239.0.188:9999'
-}
-
-
 logging.basicConfig(level=logging.INFO, filename='debug.log', filemode='w',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 headers = {
@@ -54,6 +47,8 @@ def replace_emoji(text: str) -> str:
     text = re.sub(r_boom, '炮', text)
     r_foot = '[🦶]+'
     text = re.sub(r_foot, '脚', text)
+    r_class = '[🌿]+'
+    text = re.sub(r_class, '操', text)
 
     return text
 
@@ -71,15 +66,12 @@ for i in trange(2000):
         else:
             logging.warning('第{}条请求过快, 网站开始限制访问'.format(str(i+1)))
             count += 1
-            proxies['http'] = random.choice(http)
-
             if count > 40:
                 logging.warning('已有{}条请求被限制访问, 终止后续请求!'.format(str(count)))
                 break
     except:
         logging.warning('第{}条请求失败'.format(str(i+1)))
         count += 1
-        proxies['http'] = random.choice(http)
 
 
 logging.info('执行结束,共爬取{}条语句'.format(str(len(set(sentences))-origin_count)))

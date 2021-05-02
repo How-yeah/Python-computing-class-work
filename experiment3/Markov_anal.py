@@ -49,7 +49,7 @@ class Markov():
                 # for symbol in ['，', '。', '：', '；', '？', '！']:
                 #     text = text.replace(symbol, ' '+symbol+' ')
                 print('start segmentation')
-                words = [word for word in jieba.cut(text)]
+                words = [word.strip() for word in jieba.cut(text)]
             return words
 
     def save_segmentation(self):
@@ -114,9 +114,10 @@ class Markov():
 
 # eng_mar = Markov(2, r'experiment3\data\The Old Man and the Sea.txt')
 # eng_mar.generate(200)
-chi_mar = Markov(4, r'experiment3\data\dirty_sentences', text_type='Chinese')
+chi_mar = Markov(3, r'experiment3\data\dirty_sentences', text_type='Chinese')
 chi_mar.save_segmentation()
 with open(r'experiment3\data\wow.txt', 'w') as file_obj:
-    text = chi_mar.generate(length=200)
+    text = chi_mar.generate(length=20000)
     text = text.replace('。', '。\n')
     file_obj.write(text + '\n')
+    print('saved')

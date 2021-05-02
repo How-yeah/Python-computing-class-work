@@ -1,3 +1,8 @@
+experiment3/data/dirty_sentences_segmentation.txt
+experiment3/data/dirty_sentences.txt
+experiment3/data/wow.txt
+experiment3/dirty_words.py
+
 .vscode
 # Byte-compiled / optimized / DLL files
 __pycache__/
