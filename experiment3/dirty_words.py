@@ -3,12 +3,20 @@ from tqdm import trange
 import time
 import logging
 import re
+import random
 
-logging.basicConfig(level=logging.INFO, filename='debug.log', format='%(asctime)s - %(levelname)s - %(message)s')
+http = ['27.43.186.155', '59.63.67.165', '117.95.232.60', '163.204.95.155', '60.191.11.241']
+
+proxies = {
+    'http': '114.239.0.188:9999'
+}
+
+
+logging.basicConfig(level=logging.INFO, filename='debug.log', filemode='w',
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.51',
     'referer': r'https://zuanbot.com/',
-    'cookie': 'Hm_lvt_c2fd0ab55546c713198c5c4ed1077d8c=1619956323,1619956348,1619956618,1619957091; Hm_lpvt_c2fd0ab55546c713198c5c4ed1077d8c=1619963903'
 }
 
 
@@ -52,8 +60,9 @@ def replace_emoji(text: str) -> str:
 
 logging.info('开始执行脚本')
 sentences = drop_duplicates()
+origin_count = len(sentences)
 s = requests.Session()
-count = 0
+count = 1
 for i in trange(2000):
     try:
         r = s.get('https://zuanbot.com/api.php?lang=zh_cn', headers=headers)
@@ -62,13 +71,18 @@ for i in trange(2000):
         else:
             logging.warning('第{}条请求过快, 网站开始限制访问'.format(str(i+1)))
             count += 1
-            if count > 20:
-                logging.warning('已有20条请求被限制访问, 终止后续请求!')
+            proxies['http'] = random.choice(http)
+
+            if count > 40:
+                logging.warning('已有{}条请求被限制访问, 终止后续请求!'.format(str(count)))
                 break
     except:
         logging.warning('第{}条请求失败'.format(str(i+1)))
+        count += 1
+        proxies['http'] = random.choice(http)
 
-logging.info('执行结束')
+
+logging.info('执行结束,共爬取{}条语句'.format(str(len(set(sentences))-origin_count)))
 with open(r'experiment3\data\dirty_sentences.txt', 'w') as file_obj:
     for sentence in list(set(sentences)):
         file_obj.write(sentence+'\n')
