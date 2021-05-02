@@ -31,7 +31,7 @@ for i in trange(1500):
     except:
         logging.warning('第{}条请求失败'.format(str(i)))
 
-
+logging.info('执行结束')
 with open(r'experiment3\data\dirty_sentences.txt', 'a') as file_obj:
     for sentence in sentences:
         file_obj.write(sentence+'\n')
