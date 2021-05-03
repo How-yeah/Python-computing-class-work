@@ -20,6 +20,14 @@ class Markov():
         self.words = self.text_procession()
         self.words_dict = self.analyze()
 
+        with open(path+'_dict.txt', 'w') as file_obj:
+            for key, value in self.words_dict.items():
+                for word in key:
+                    file_obj.write(word+' ')
+                file_obj.write('\n')
+                for _key, _value in value.items():
+                    file_obj.write('\t\t'+_key+': '+str(_value)+'\n')
+
     def get_path(self):
         path = os.path.join(os.getcwd(), self.path+'.txt')
         if os.path.exists(path):
@@ -37,19 +45,14 @@ class Markov():
             return words
         else:
             text = self.txt.replace('\n', ' ').replace('[', ' ').replace(']', ' ')
-            r = '[-*#\"\'\\()%“‘’”、（）|=\d]+'
+            r = '[-*#\"\'\\()%“‘’”、（）|=\d<>《》/]+'
             text = re.sub(r, '', text)
             if self.type == 'English':
                 for symbol in [',', '.', ':', ';', '?', '!']:
                     text = re.sub('[{}]+'.format(symbol), ' '+symbol+' ', text)
-                    # text = text.replace(symbol, ' '+symbol+' ', text)
-                words = text.split(' ')
-                words = [word.lower() for word in words if word != '']
+                words = [word.lower() for word in text.split(' ') if not word.isspace()]
             else:
-                # for symbol in ['，', '。', '：', '；', '？', '！']:
-                #     text = text.replace(symbol, ' '+symbol+' ')
-                print('start segmentation')
-                words = [word.strip() for word in jieba.cut(text)]
+                words = [word.strip() for word in jieba.cut(text) if not word.isspace()]
             return words
 
     def save_segmentation(self):
@@ -68,7 +71,7 @@ class Markov():
             if n_words not in words_dict:
                 words_dict[n_words] = {}
 
-                words_dict[n_words][self.words[i+self.n]] = words_dict[n_words].get(self.words[i+self.n], 0)+1
+            words_dict[n_words][self.words[i+self.n]] = words_dict[n_words].get(self.words[i+self.n], 0)+1
         return words_dict
 
     def word_frequency_sum(self, fre_dict: dict) -> int:
@@ -101,8 +104,15 @@ class Markov():
                 chain += word
                 if self.type == 'English':
                     chain += ' '
-            cur_word = self.fetch_suffix(self.words_dict[cur_word])
+            # 不舍弃前缀的选取方式, 效果不理想
+            # suffix = self.fetch_suffix(self.words_dict[cur_word])  # 根据概率取后缀
+            # # 删除前缀的第一个单词,加入后缀
+            # cur_word = list(cur_word[1:])
+            # cur_word.append(suffix)
+            # cur_word = tuple(cur_word)
 
+            # 舍去前缀
+            cur_word = self.fetch_suffix(self.words_dict[cur_word])
             key = []
             for words_tuple in self.words_dict.keys():
                 if cur_word == words_tuple[0]:
@@ -114,8 +124,10 @@ class Markov():
 
 # eng_mar = Markov(2, r'experiment3\data\The Old Man and the Sea.txt')
 # eng_mar.generate(200)
-chi_mar = Markov(3, r'experiment3\data\dirty_sentences', text_type='Chinese')
+
+chi_mar = Markov(2, r'experiment3\data\dirty_sentences', text_type='Chinese')
 chi_mar.save_segmentation()
+# print(chi_mar.generate(length=2000))
 with open(r'experiment3\data\wow.txt', 'w') as file_obj:
     text = chi_mar.generate(length=20000)
     text = text.replace('。', '。\n')
