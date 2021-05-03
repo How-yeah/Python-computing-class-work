@@ -20,14 +20,6 @@ class Markov():
         self.words = self.text_procession()
         self.words_dict = self.analyze()
 
-        with open(path+'_dict.txt', 'w') as file_obj:
-            for key, value in self.words_dict.items():
-                for word in key:
-                    file_obj.write(word+' ')
-                file_obj.write('\n')
-                for _key, _value in value.items():
-                    file_obj.write('\t\t'+_key+': '+str(_value)+'\n')
-
     def get_path(self):
         path = os.path.join(os.getcwd(), self.path+'.txt')
         if os.path.exists(path):
@@ -73,6 +65,15 @@ class Markov():
 
             words_dict[n_words][self.words[i+self.n]] = words_dict[n_words].get(self.words[i+self.n], 0)+1
         return words_dict
+
+    def save_dict(self):
+        with open(path+'_dict_{}.txt'.format(str(self.n)), 'w') as file_obj:
+            for key, value in self.words_dict.items():
+                for word in key:
+                    file_obj.write(word+' ')
+                file_obj.write('\n')
+                for _key, _value in value.items():
+                    file_obj.write('\t\t'+_key+': '+str(_value)+'\n')
 
     def word_frequency_sum(self, fre_dict: dict) -> int:
         sum = 0
