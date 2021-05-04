@@ -3,6 +3,7 @@ import random
 import re
 import jieba
 from tqdm import trange
+from translate import Translator
 
 
 class Markov():
@@ -123,14 +124,17 @@ class Markov():
         return chain
 
 
-# eng_mar = Markov(2, r'experiment3\data\The Old Man and the Sea.txt')
-# eng_mar.generate(200)
+eng_mar = Markov(2, r'experiment3\data\whitefang')
+eng_mar.save_segmentation()
 
-chi_mar = Markov(2, r'experiment3\data\dirty_sentences', text_type='Chinese')
-chi_mar.save_segmentation()
+translator = Translator(from_lang="english", to_lang="chinese")
+translation = translator.translate(eng_mar.generate(20))
+print(translation)
+# chi_mar = Markov(2, r'experiment3\data\围城', text_type='Chinese')
+# chi_mar.save_segmentation()
 # print(chi_mar.generate(length=2000))
-with open(r'experiment3\data\wow.txt', 'w') as file_obj:
-    text = chi_mar.generate(length=20000)
-    text = text.replace('。', '。\n')
-    file_obj.write(text + '\n')
-    print('saved')
+# with open(r'experiment3\data\wow.txt', 'w') as file_obj:
+#     text = chi_mar.generate(length=20000)
+#     text = text.replace('。', '。\n')
+#     file_obj.write(text + '\n')
+#     print('saved')
