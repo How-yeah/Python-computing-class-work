@@ -3,7 +3,6 @@ import random
 import re
 import jieba
 from tqdm import trange
-from translate import Translator
 
 
 class Markov():
@@ -22,6 +21,9 @@ class Markov():
         self.words_dict = self.analyze()
 
     def get_path(self):
+        """
+        封装保存路径
+        """
         path = os.path.join(os.getcwd(), self.path+'.txt')
         if os.path.exists(path):
             with open(path) as txt:
@@ -30,6 +32,10 @@ class Markov():
             return ''
 
     def text_procession(self) -> list:
+        """
+        文本脏数据处理、分词
+        :return: 分词列表
+        """
         path = os.path.join(os.getcwd(), self.path+'_segmentation.txt')
         if os.path.exists(path):
             with open(path) as file_obj:
@@ -37,26 +43,36 @@ class Markov():
                 words = text.split(' ')
             return words
         else:
-            text = self.txt.replace('\n', ' ').replace('[', ' ').replace(']', ' ')
+            text = self.txt.replace('\n', ' ').replace(
+                '[', ' ').replace(']', ' ')
             r = '[-*#\"\'\\()%“‘’”、（）|=\d<>《》/]+'
             text = re.sub(r, '', text)
             if self.type == 'English':
                 for symbol in [',', '.', ':', ';', '?', '!']:
                     text = re.sub('[{}]+'.format(symbol), ' '+symbol+' ', text)
-                words = [word.lower() for word in text.split(' ') if not word.isspace()]
+                words = [word.lower().strip()
+                         for word in text.split() if not word.isspace()]
             else:
-                words = [word.strip() for word in jieba.cut(text) if not word.isspace()]
+                words = [word.strip()
+                         for word in jieba.cut(text) if not word.isspace()]
             return words
 
     def save_segmentation(self):
+        """
+        保存分词结果
+        """
         path = os.path.join(os.getcwd(), self.path+'_segmentation.txt')
         with open(path, 'w') as file_obj:
             for word in self.words:
                 file_obj.write(word+' ')
 
     def analyze(self) -> dict:
+        """
+        统计后缀词频
+        """
         words_dict = {}
-        count = len(self.words)//self.n if self.n != 1 else len(self.words)//self.n-1
+        count = len(
+            self.words)//self.n if self.n != 1 else len(self.words)//self.n-1
 
         print('Start analyzing')
         for i in trange(count):
@@ -64,11 +80,15 @@ class Markov():
             if n_words not in words_dict:
                 words_dict[n_words] = {}
 
-            words_dict[n_words][self.words[i+self.n]] = words_dict[n_words].get(self.words[i+self.n], 0)+1
+            words_dict[n_words][self.words[i+self.n]
+                                ] = words_dict[n_words].get(self.words[i+self.n], 0)+1
         return words_dict
 
     def save_dict(self):
-        with open(path+'_dict_{}.txt'.format(str(self.n)), 'w') as file_obj:
+        """
+        以字典格式保存后缀词频
+        """
+        with open(self.path+'_dict_{}.txt'.format(str(self.n)), 'w') as file_obj:
             for key, value in self.words_dict.items():
                 for word in key:
                     file_obj.write(word+' ')
@@ -77,12 +97,20 @@ class Markov():
                     file_obj.write('\t\t'+_key+': '+str(_value)+'\n')
 
     def word_frequency_sum(self, fre_dict: dict) -> int:
+        """
+        统计后缀总数
+        """
         sum = 0
         for word, value in fre_dict.items():
             sum += value
         return sum
 
     def fetch_suffix(self, fre_dict: dict) -> str:
+        """
+        按词频概率选取后缀
+        :param fre_dict: 单个前后缀字典
+        :return: 后缀
+        """
         rand_int = random.randint(1, self.word_frequency_sum(fre_dict))
         for word, value in fre_dict.items():
             rand_int -= value
@@ -90,6 +118,12 @@ class Markov():
                 return word
 
     def generate(self, length: int = 100, cur_word: str = ''):
+        """
+        生成随机文本
+        :param length: 文本字数
+        :param cur_word: 文首词
+        :return: 随机文本
+        """
         chain = ''
         if not cur_word:
             cur_word = random.choice(list(self.words_dict.keys()))
@@ -125,11 +159,11 @@ class Markov():
 
 
 eng_mar = Markov(2, r'experiment3\data\whitefang')
+eng_mar.save_dict()
 eng_mar.save_segmentation()
 
-translator = Translator(from_lang="english", to_lang="chinese")
-translation = translator.translate(eng_mar.generate(20))
-print(translation)
+print(eng_mar.generate(200, "i"))
+
 # chi_mar = Markov(2, r'experiment3\data\围城', text_type='Chinese')
 # chi_mar.save_segmentation()
 # print(chi_mar.generate(length=2000))
