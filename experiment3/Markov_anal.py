@@ -158,17 +158,19 @@ class Markov():
         return chain
 
 
-eng_mar = Markov(2, r'experiment3\data\whitefang')
-eng_mar.save_dict()
-eng_mar.save_segmentation()
+# eng_mar = Markov(2, r'experiment3\data\whitefang')
+# eng_mar.save_dict()
+# eng_mar.save_segmentation()
 
-print(eng_mar.generate(200, "i"))
+# print(eng_mar.generate(200, "i"))
 
-# chi_mar = Markov(2, r'experiment3\data\围城', text_type='Chinese')
-# chi_mar.save_segmentation()
-# print(chi_mar.generate(length=2000))
+chi_mar = Markov(5, r'experiment3\data\围城', text_type='Chinese')
+chi_mar.save_segmentation()
+print(chi_mar.generate(length=200, cur_word='我'))
+
+
 # with open(r'experiment3\data\wow.txt', 'w') as file_obj:
-#     text = chi_mar.generate(length=20000)
+#     text = chi_mar.generate(length=2000)
 #     text = text.replace('。', '。\n')
 #     file_obj.write(text + '\n')
 #     print('saved')

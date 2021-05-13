@@ -10,7 +10,7 @@ def drop_duplicates(seq):
         return reverse_dict(reverse_dict(seq))
 
 
-a = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+a = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 7, 6]
 print(drop_duplicates(a))
 
 b = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 1, 'f': 2, 'g': 3, 'h': 4}
