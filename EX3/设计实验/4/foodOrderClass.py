@@ -58,17 +58,3 @@ class Lunch:
     def result(self):
         return self.custom.showOrder()
 
-
-# def main():
-#     restaurant = Employee('KFC')
-#     menu = ['hamburger', 'sandwiches', 'French Fries']
-#     restaurant.setMenu(menu)
-#     print(restaurant.showMenu())
-#     person = Custom('Tom')
-#     lunch = Lunch(person, restaurant)
-#     lunch.order('hamburger')
-#     print(lunch.result()[0])
-#
-#
-# if __name__ == '__main__':
-#     main()
